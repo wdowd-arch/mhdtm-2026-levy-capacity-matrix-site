@@ -3,46 +3,78 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Marblehead levy paths from FY2027 baseline</title>
-<meta name="description" content="Marblehead property tax levy paths from an FY2027 baseline, including Year 1, Year 2, Year 3, Year 10, Year 20 and Year 30." />
+<title>Median Marblehead Home Tax Bill Impact</title>
+<meta name="description" content="Standalone page showing how each override scenario affects the median Marblehead single-family home's property tax bill." />
 <style>
+  :root {
+    --paper: #efe8da;
+    --card: #f8f3ea;
+    --line: #dfd2bc;
+    --muted: #655f56;
+    --text: #111;
+    --subtle: #f0e9dc;
+    --subtle-line: #c9b999;
+  }
   html, body {
     margin: 0;
     padding: 0;
-    background: #efe8da;
+    background: var(--paper);
   }
   body {
-    font-family: Georgia, serif;
-    color: #111;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    color: var(--text);
     padding: 24px 14px 40px;
   }
   .page {
-    max-width: 1120px;
+    max-width: 1020px;
     margin: 0 auto;
   }
   .mhd-matrix {
-    font-family: Georgia, serif;
-    background: #f8f3ea;
+    background: var(--card);
     padding: 24px 18px;
-    border-radius: 6px;
-    color: #111;
-    box-sizing: border-box;
-    border: 1px solid #dfd4c1;
+    border-radius: 8px;
+    border: 1px solid var(--line);
   }
-  .mhd-matrix * { box-sizing: border-box; }
-  .mhd-inner { max-width: 980px; margin: 0 auto; }
+  .mhd-inner {
+    max-width: 820px;
+    margin: 0 auto;
+  }
   h2.mhd-h {
-    font-size: clamp(20px, 4.3vw, 29px);
+    font-size: clamp(20px, 4.5vw, 28px);
     font-weight: 700;
-    line-height: 1.1;
-    margin: 0 0 10px;
+    line-height: 1.15;
+    margin: 0 0 8px;
     letter-spacing: -0.02em;
   }
   p.mhd-lede {
-    margin: 0 0 16px;
     font-size: 13px;
+    line-height: 1.65;
+    color: #333;
+    margin: 0 0 6px;
+  }
+  p.mhd-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 0 0 14px;
     line-height: 1.6;
-    color: #3e3a34;
+  }
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    font-size: 11px;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .legend-bar {
+    display: flex;
+    gap: 2px;
+  }
+  .legend-swatch {
+    width: 18px;
+    height: 12px;
+    border-radius: 2px;
   }
   .scroll {
     overflow-x: auto;
@@ -56,39 +88,40 @@
   }
   .thead-scen {
     text-align: left;
-    padding: 6px 8px 8px 0;
+    padding: 6px 8px 6px 0;
     font-size: 10px;
-    color: #6a6259;
+    color: #555;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    font-weight: 600;
+    font-weight: 700;
     border-bottom: 2px solid #111;
-    width: 25%;
+    width: 24%;
   }
   .thead-col {
     text-align: center;
-    padding: 4px 2px 8px;
+    padding: 4px 3px 6px;
     border-bottom: 2px solid #111;
-    width: 10.7%;
+    width: 12.6%;
   }
   .th-label {
     font-size: 11px;
-    color: #111;
     font-weight: 700;
     white-space: nowrap;
   }
   .th-sub {
     font-size: 9px;
-    color: #85796a;
+    color: #666;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     white-space: nowrap;
     margin-top: 2px;
   }
-  .row:hover { outline: 2px solid var(--oc); }
+  .row:hover {
+    outline: 2px solid var(--oc);
+  }
   .scenario-cell {
     padding: 8px 8px 8px 0;
-    border-bottom: 1px solid #e7dece;
+    border-bottom: 1px solid #e8e0d2;
     vertical-align: middle;
   }
   .scenario-inner {
@@ -97,8 +130,8 @@
     gap: 8px;
   }
   .dot {
-    width: 9px;
-    height: 9px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     flex-shrink: 0;
   }
@@ -106,33 +139,37 @@
     font-size: 13px;
     font-weight: 700;
     line-height: 1.2;
-    color: #111;
   }
   .sublabel {
-    font-size: 11px;
-    color: #51483f;
+    font-size: 12px;
+    color: #333;
     margin-top: 3px;
-    white-space: nowrap;
+    white-space: normal;
+    line-height: 1.25;
   }
   td.c {
-    padding: 3px 2px;
-    border-bottom: 1px solid #e7dece;
+    padding: 4px 3px;
+    border-bottom: 1px solid #e8e0d2;
     text-align: center;
   }
   .cell {
     border-radius: 6px;
-    padding: 8px 2px;
+    padding: 10px 4px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 56px;
     text-align: center;
-    min-height: 54px;
   }
-  .cell-base {
-    background: #eee7d7;
-    color: #5e554a;
-    border: 1px dashed #c7b9a0;
+  .cell-today {
+    background: var(--subtle);
+    color: #555;
+    border: 1px dashed var(--subtle-line);
+  }
+  .cell-today .val {
+    color: #555;
+    font-weight: 500;
   }
   .val {
     font-size: 12px;
@@ -140,118 +177,150 @@
     white-space: nowrap;
     line-height: 1.15;
   }
-  .cell-y30 .val {
+  .cell-y10 .val {
     font-size: 13px;
   }
   .delta {
     font-size: 10px;
-    opacity: 0.9;
+    opacity: 0.92;
     margin-top: 3px;
     white-space: nowrap;
+    font-weight: 600;
   }
-  .note-box {
-    margin-top: 14px;
-    padding: 12px 14px;
-    background: #f2ede3;
-    border: 1px solid #ddd1bd;
-    border-radius: 6px;
+  .callout, .method {
+    margin-top: 16px;
+    border-radius: 8px;
+    padding: 13px 14px;
     font-size: 12px;
-    line-height: 1.6;
-    color: #4d463d;
+    line-height: 1.68;
   }
-  .explainer {
-    margin-top: 14px;
-    padding: 14px;
-    background: #f6f1e7;
-    border: 1px solid #ddd1bd;
-    border-radius: 6px;
+  .callout {
+    background: #f2eee3;
+    border: 1px solid #d8caad;
+    color: #444;
   }
-  .explainer h3 {
-    margin: 0 0 8px;
-    font-size: 14px;
-    line-height: 1.2;
+  .callout strong { color: #243b67; }
+  .method {
+    background: #eef2f3;
+    border: 1px solid #c5d1d9;
+    color: #444;
   }
-  .explainer p {
-    margin: 0 0 8px;
-    font-size: 12px;
-    line-height: 1.6;
-    color: #4d463d;
+  .method strong { color: #2e4057; }
+  .method code {
+    background: #f7f9fa;
+    padding: 1px 4px;
+    border-radius: 3px;
   }
-  .explainer p:last-child { margin-bottom: 0; }
   .footnote {
     margin-top: 12px;
     font-size: 11px;
-    color: #6b6258;
-    line-height: 1.6;
-    border-top: 1px solid #ddd1bd;
+    color: var(--muted);
+    line-height: 1.7;
+    border-top: 1px solid #ddd;
     padding-top: 10px;
   }
-  @media (max-width: 760px) {
+
+  @media (max-width: 700px) {
     .mhd-matrix { padding: 18px 12px; }
-    .thead-scen { width: 30%; }
-    .thead-col { width: 12.5%; }
+    .thead-scen { width: 26%; }
+    .thead-col { width: 12.4%; }
     .scenario-label { font-size: 12px; }
+    .sublabel { font-size: 11px; }
     .val { font-size: 11px; }
-    .cell-y30 .val { font-size: 12px; }
-    .cell { min-height: 48px; padding: 7px 1px; }
+    .cell-y10 .val { font-size: 12px; }
+    .cell { padding: 8px 2px; min-height: 50px; }
     .delta { font-size: 9px; }
   }
+
   @media (max-width: 480px) {
     body { padding: 16px 8px 28px; }
     .mhd-matrix { padding: 14px 8px; }
-    .mhd-h { font-size: 19px; }
-    .mhd-lede { font-size: 12px; }
-    .thead-scen { width: 32%; padding-right: 4px; }
+    h2.mhd-h { font-size: 19px; }
+    p.mhd-lede { font-size: 12px; }
+    .thead-scen { width: 27%; padding-right: 4px; }
     .thead-col { width: 12.2%; padding: 4px 1px 6px; }
     .th-label { font-size: 10px; }
-    .th-sub { font-size: 8px; }
+    .th-sub { font-size: 8px; letter-spacing: 0.04em; }
     .scenario-cell { padding: 7px 4px 7px 0; }
-    .scenario-label { font-size: 11px; }
+    .scenario-label { font-size: 11px; line-height: 1.12; }
     .sublabel { font-size: 10px; }
+    .dot { width: 7px; height: 7px; }
     td.c { padding: 2px 1px; }
-    .cell { padding: 6px 1px; min-height: 42px; }
-    .val { font-size: 10px; }
-    .cell-y30 .val { font-size: 11px; }
+    .cell { padding: 6px 1px; border-radius: 4px; min-height: 42px; }
+    .val { font-size: 9.5px; }
+    .cell-y10 .val { font-size: 10px; }
     .delta { font-size: 8px; margin-top: 2px; }
+    .callout, .method { font-size: 11px; padding: 10px 12px; }
     .footnote { font-size: 10px; }
   }
+
+  * {
+    font-family: Georgia, "Times New Roman", Times, serif;
+  }
+
 </style>
 </head>
 <body>
 <div class="page">
   <div class="mhd-matrix">
     <div class="mhd-inner">
-      <h2 class="mhd-h">Marblehead levy paths from an FY2027 baseline</h2>
-      <p class="mhd-lede">This starts with Marblehead's FY2027 base levy and then shows what happens if voters add the first, second, and third override draws over time. Service tiers follow the town's FY2027 three-tier override presentation. Trash follows the FY27 curbside amount in the no-override budget and the follow-on draws shown in town materials.</p>
+      <h2 class="mhd-h">What the override vote means for the median Marblehead tax bill</h2>
+
+      <p class="mhd-lede">
+        This table uses the town's median homeowner example: a single-family home assessed at <strong>$998,600</strong> with a current tax bill of about <strong>$8,548</strong>. It shows the property-tax bill under each override outcome for the median home.
+      </p>
+      <p class="mhd-sub">
+        The service override phases in over three years. Trash uses the FY27 curbside amount and two smaller follow-on draws. Trash rows here show the property-tax bill only. If the trash and recycling override passes, the separate household fee goes away. If it fails, that fee stays.
+      </p>
+
+      <div class="legend-row">
+        <div class="legend-bar">
+          <div class="legend-swatch" style="background:rgb(247,240,214);"></div>
+          <div class="legend-swatch" style="background:rgb(229,198,95);"></div>
+          <div class="legend-swatch" style="background:rgb(165,172,116);"></div>
+          <div class="legend-swatch" style="background:rgb(104,144,186);"></div>
+          <div class="legend-swatch" style="background:rgb(53,85,133);"></div>
+          <div class="legend-swatch" style="background:rgb(28,43,74);"></div>
+        </div>
+        <span>Lower to higher property-tax bills on a single scale</span>
+      </div>
+
       <div class="scroll">
         <table class="mhd-tbl">
           <thead>
             <tr>
               <th class="thead-scen">Scenario</th>
-              <th class="thead-col"><div class="th-label">FY27 Base</div><div class="th-sub">No override</div></th>
-              <th class="thead-col"><div class="th-label">Year 1</div><div class="th-sub">FY27</div></th>
-              <th class="thead-col"><div class="th-label">Year 2</div><div class="th-sub">FY28</div></th>
-              <th class="thead-col"><div class="th-label">Year 3</div><div class="th-sub">FY29</div></th>
-              <th class="thead-col"><div class="th-label">Year 10</div><div class="th-sub">Growing</div></th>
-              <th class="thead-col"><div class="th-label">Year 20</div><div class="th-sub">Growing</div></th>
-              <th class="thead-col"><div class="th-label">Year 30</div><div class="th-sub">Growing</div></th>
+              <th class="thead-col"><div class="th-label">Today</div><div class="th-sub">Current bill</div></th>
+              <th class="thead-col"><div class="th-label">Year 1</div><div class="th-sub">First draw</div></th>
+              <th class="thead-col"><div class="th-label">Year 2</div><div class="th-sub">Second draw</div></th>
+              <th class="thead-col"><div class="th-label">Year 3</div><div class="th-sub">Phased in</div></th>
+              <th class="thead-col"><div class="th-label">Year 5</div><div class="th-sub">After growth</div></th>
+              <th class="thead-col"><div class="th-label">Year 10</div><div class="th-sub">After growth</div></th>
             </tr>
           </thead>
           <tbody>
-            <tr class="row" style="--oc:#274c77;"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:#274c77;"></div><div><div class="scenario-label">Tier 3 + Trash</div><div class="sublabel">Invest + trash</div></div></div></td><td class="c"><div class="cell cell-base"><div class="val">$87.0M</div></div></td><td class="c"><div class="cell" style="background:#dbdbd6;color:#111;"><div class="val">$93.5M</div><div class="delta" style="color:#111;">+$6.5M</div></div></td><td class="c"><div class="cell" style="background:#dadad5;color:#111;"><div class="val">$103.0M</div><div class="delta" style="color:#111;">+$16.0M</div></div></td><td class="c"><div class="cell" style="background:#d0d2d0;color:#111;"><div class="val">$109.2M</div><div class="delta" style="color:#111;">+$22.2M</div></div></td><td class="c"><div class="cell" style="background:#aeb7be;color:#111;"><div class="val">$129.8M</div><div class="delta" style="color:#111;">+$42.8M</div></div></td><td class="c"><div class="cell" style="background:#73889f;color:#fff;"><div class="val">$166.2M</div><div class="delta" style="color:#fff;">+$79.2M</div></div></td><td class="c"><div class="cell cell-y30" style="background:#274c77;color:#fff;"><div class="val">$212.8M</div><div class="delta" style="color:#fff;">+$125.7M</div></div></td></tr><tr class="row" style="--oc:#3a6ea5;"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:#3a6ea5;"></div><div><div class="scenario-label">Tier 3 only</div><div class="sublabel">Invest</div></div></div></td><td class="c"><div class="cell cell-base"><div class="val">$87.0M</div></div></td><td class="c"><div class="cell" style="background:#dee0dc;color:#111;"><div class="val">$91.3M</div><div class="delta" style="color:#111;">+$4.3M</div></div></td><td class="c"><div class="cell" style="background:#dee0dc;color:#111;"><div class="val">$100.7M</div><div class="delta" style="color:#111;">+$13.7M</div></div></td><td class="c"><div class="cell" style="background:#d7dbd9;color:#111;"><div class="val">$106.8M</div><div class="delta" style="color:#111;">+$19.8M</div></div></td><td class="c"><div class="cell" style="background:#b9c6cf;color:#111;"><div class="val">$127.0M</div><div class="delta" style="color:#111;">+$40.0M</div></div></td><td class="c"><div class="cell" style="background:#84a2be;color:#111;"><div class="val">$162.5M</div><div class="delta" style="color:#111;">+$75.5M</div></div></td><td class="c"><div class="cell cell-y30" style="background:#4173a7;color:#fff;"><div class="val">$208.1M</div><div class="delta" style="color:#fff;">+$121.0M</div></div></td></tr><tr class="row" style="--oc:#9c6b30;"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:#9c6b30;"></div><div><div class="scenario-label">Tier 2 + Trash</div><div class="sublabel">Build + trash</div></div></div></td><td class="c"><div class="cell cell-base"><div class="val">$87.0M</div></div></td><td class="c"><div class="cell" style="background:#e9dfce;color:#111;"><div class="val">$92.0M</div><div class="delta" style="color:#111;">+$5.0M</div></div></td><td class="c"><div class="cell" style="background:#e9dfce;color:#111;"><div class="val">$101.1M</div><div class="delta" style="color:#111;">+$14.0M</div></div></td><td class="c"><div class="cell" style="background:#e7dbc8;color:#111;"><div class="val">$106.1M</div><div class="delta" style="color:#111;">+$19.1M</div></div></td><td class="c"><div class="cell" style="background:#d9c6ab;color:#111;"><div class="val">$126.2M</div><div class="delta" style="color:#111;">+$39.2M</div></div></td><td class="c"><div class="cell" style="background:#c0a179;color:#111;"><div class="val">$161.5M</div><div class="delta" style="color:#111;">+$74.5M</div></div></td><td class="c"><div class="cell cell-y30" style="background:#a07139;color:#fff;"><div class="val">$206.8M</div><div class="delta" style="color:#fff;">+$119.7M</div></div></td></tr><tr class="row" style="--oc:#c58b39;"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:#c58b39;"></div><div><div class="scenario-label">Tier 2 only</div><div class="sublabel">Build</div></div></div></td><td class="c"><div class="cell cell-base"><div class="val">$87.0M</div></div></td><td class="c"><div class="cell" style="background:#eee3cf;color:#111;"><div class="val">$89.8M</div><div class="delta" style="color:#111;">+$2.8M</div></div></td><td class="c"><div class="cell" style="background:#eee3cf;color:#111;"><div class="val">$98.8M</div><div class="delta" style="color:#111;">+$11.7M</div></div></td><td class="c"><div class="cell" style="background:#eee2cc;color:#111;"><div class="val">$103.7M</div><div class="delta" style="color:#111;">+$16.7M</div></div></td><td class="c"><div class="cell" style="background:#e6d2b2;color:#111;"><div class="val">$123.3M</div><div class="delta" style="color:#111;">+$36.3M</div></div></td><td class="c"><div class="cell" style="background:#dab783;color:#111;"><div class="val">$157.8M</div><div class="delta" style="color:#111;">+$70.8M</div></div></td><td class="c"><div class="cell cell-y30" style="background:#c99447;color:#111;"><div class="val">$202.1M</div><div class="delta" style="color:#111;">+$115.0M</div></div></td></tr><tr class="row" style="--oc:#6b8e23;"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:#6b8e23;"></div><div><div class="scenario-label">Tier 1 + Trash</div><div class="sublabel">Partial Restore + trash</div></div></div></td><td class="c"><div class="cell cell-base"><div class="val">$87.0M</div></div></td><td class="c"><div class="cell" style="background:#e4e3cc;color:#111;"><div class="val">$90.5M</div><div class="delta" style="color:#111;">+$3.5M</div></div></td><td class="c"><div class="cell" style="background:#e4e3cc;color:#111;"><div class="val">$98.1M</div><div class="delta" style="color:#111;">+$11.1M</div></div></td><td class="c"><div class="cell" style="background:#e3e3cb;color:#111;"><div class="val">$103.0M</div><div class="delta" style="color:#111;">+$16.0M</div></div></td><td class="c"><div class="cell" style="background:#cdd4ad;color:#111;"><div class="val">$122.5M</div><div class="delta" style="color:#111;">+$35.5M</div></div></td><td class="c"><div class="cell" style="background:#a8b978;color:#111;"><div class="val">$156.8M</div><div class="delta" style="color:#111;">+$69.8M</div></div></td><td class="c"><div class="cell cell-y30" style="background:#789735;color:#fff;"><div class="val">$200.7M</div><div class="delta" style="color:#fff;">+$113.7M</div></div></td></tr><tr class="row" style="--oc:#8aa05d;"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:#8aa05d;"></div><div><div class="scenario-label">Tier 1 only</div><div class="sublabel">Partial Restore</div></div></div></td><td class="c"><div class="cell cell-base"><div class="val">$87.0M</div></div></td><td class="c"><div class="cell" style="background:#e7e6d3;color:#111;"><div class="val">$88.3M</div><div class="delta" style="color:#111;">+$1.3M</div></div></td><td class="c"><div class="cell" style="background:#e7e6d3;color:#111;"><div class="val">$95.8M</div><div class="delta" style="color:#111;">+$8.8M</div></div></td><td class="c"><div class="cell" style="background:#e7e6d3;color:#111;"><div class="val">$100.6M</div><div class="delta" style="color:#111;">+$13.6M</div></div></td><td class="c"><div class="cell" style="background:#d9dbc0;color:#111;"><div class="val">$119.6M</div><div class="delta" style="color:#111;">+$32.6M</div></div></td><td class="c"><div class="cell" style="background:#bcc59d;color:#111;"><div class="val">$153.1M</div><div class="delta" style="color:#111;">+$66.1M</div></div></td><td class="c"><div class="cell cell-y30" style="background:#98ab6f;color:#111;"><div class="val">$196.0M</div><div class="delta" style="color:#111;">+$109.0M</div></div></td></tr><tr class="row" style="--oc:#2f7f79;"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:#2f7f79;"></div><div><div class="scenario-label">Trash only</div><div class="sublabel">Trash</div></div></div></td><td class="c"><div class="cell cell-base"><div class="val">$87.0M</div></div></td><td class="c"><div class="cell" style="background:#dce2d6;color:#111;"><div class="val">$89.2M</div><div class="delta" style="color:#111;">+$2.2M</div></div></td><td class="c"><div class="cell" style="background:#dce2d6;color:#111;"><div class="val">$91.5M</div><div class="delta" style="color:#111;">+$4.5M</div></div></td><td class="c"><div class="cell" style="background:#dce2d6;color:#111;"><div class="val">$93.8M</div><div class="delta" style="color:#111;">+$6.8M</div></div></td><td class="c"><div class="cell" style="background:#ced9ce;color:#111;"><div class="val">$111.5M</div><div class="delta" style="color:#111;">+$24.5M</div></div></td><td class="c"><div class="cell" style="background:#9dbdb4;color:#111;"><div class="val">$142.8M</div><div class="delta" style="color:#111;">+$55.8M</div></div></td><td class="c"><div class="cell cell-y30" style="background:#5e9a92;color:#111;"><div class="val">$182.8M</div><div class="delta" style="color:#111;">+$95.8M</div></div></td></tr><tr class="row" style="--oc:#8b8b8b;"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:#8b8b8b;"></div><div><div class="scenario-label">No overrides</div></div></div></td><td class="c"><div class="cell cell-base"><div class="val">$87.0M</div></div></td><td class="c"><div class="cell" style="background:#ece7dc;color:#111;"><div class="val">$87.0M</div><div class="delta" style="color:#111;">baseline</div></div></td><td class="c"><div class="cell" style="background:#e7e3d8;color:#111;"><div class="val">$89.2M</div><div class="delta" style="color:#111;">+$2.2M</div></div></td><td class="c"><div class="cell" style="background:#e7e3d8;color:#111;"><div class="val">$91.4M</div><div class="delta" style="color:#111;">+$4.4M</div></div></td><td class="c"><div class="cell" style="background:#e2ded4;color:#111;"><div class="val">$108.7M</div><div class="delta" style="color:#111;">+$21.7M</div></div></td><td class="c"><div class="cell" style="background:#c8c6bf;color:#111;"><div class="val">$139.1M</div><div class="delta" style="color:#111;">+$52.1M</div></div></td><td class="c"><div class="cell cell-y30" style="background:#a8a7a3;color:#111;"><div class="val">$178.1M</div><div class="delta" style="color:#111;">+$91.1M</div></div></td></tr>
+            <tr class="row" style="--oc:rgb(28,43,74);"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:rgb(28,43,74);"></div><div><div class="scenario-label">Tier 3 + Trash</div><div class="sublabel">~$312/mo above today by yr 10</div></div></div></td><td class="c"><div class="cell cell-today"><div class="val">$8,548</div></div></td><td class="c"><div class="cell" style="background:rgb(234,210,128);color:#111;"><div class="val">$9,196</div><div class="delta" style="color:#111;">+$648</div></div></td><td class="c"><div class="cell" style="background:rgb(182,179,110);color:#111;"><div class="val">$9,926</div><div class="delta" style="color:#111;">+$1,378</div></div></td><td class="c"><div class="cell" style="background:rgb(147,164,136);color:#111;"><div class="val">$10,326</div><div class="delta" style="color:#111;">+$1,778</div></div></td><td class="c"><div class="cell" style="background:rgb(103,143,185);color:#fff;"><div class="val">$10,849</div><div class="delta" style="color:#fff;">+$2,301</div></div></td><td class="c"><div class="cell cell-y10" style="background:rgb(28,43,74);color:#fff;"><div class="val">$12,274</div><div class="delta" style="color:#fff;">+$3,726</div></div></td></tr><tr class="row" style="--oc:rgb(38,60,97);"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:rgb(38,60,97);"></div><div><div class="scenario-label">Tier 3 only</div><div class="sublabel">~$287/mo above today by yr 10</div></div></div></td><td class="c"><div class="cell cell-today"><div class="val">$8,548</div></div></td><td class="c"><div class="cell" style="background:rgb(240,223,164);color:#111;"><div class="val">$8,977</div><div class="delta" style="color:#111;">+$429</div></div></td><td class="c"><div class="cell" style="background:rgb(202,187,104);color:#111;"><div class="val">$9,697</div><div class="delta" style="color:#111;">+$1,149</div></div></td><td class="c"><div class="cell" style="background:rgb(168,173,115);color:#111;"><div class="val">$10,085</div><div class="delta" style="color:#111;">+$1,537</div></div></td><td class="c"><div class="cell" style="background:rgb(124,153,163);color:#fff;"><div class="val">$10,596</div><div class="delta" style="color:#fff;">+$2,048</div></div></td><td class="c"><div class="cell cell-y10" style="background:rgb(38,60,97);color:#fff;"><div class="val">$11,988</div><div class="delta" style="color:#fff;">+$3,440</div></div></td></tr><tr class="row" style="--oc:rgb(41,64,104);"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:rgb(41,64,104);"></div><div><div class="scenario-label">Tier 2 + Trash</div><div class="sublabel">~$280/mo above today by yr 10</div></div></div></td><td class="c"><div class="cell cell-today"><div class="val">$8,548</div></div></td><td class="c"><div class="cell" style="background:rgb(238,219,153);color:#111;"><div class="val">$9,046</div><div class="delta" style="color:#111;">+$498</div></div></td><td class="c"><div class="cell" style="background:rgb(199,186,105);color:#111;"><div class="val">$9,733</div><div class="delta" style="color:#111;">+$1,185</div></div></td><td class="c"><div class="cell" style="background:rgb(174,176,113);color:#111;"><div class="val">$10,018</div><div class="delta" style="color:#111;">+$1,470</div></div></td><td class="c"><div class="cell" style="background:rgb(130,156,156);color:#fff;"><div class="val">$10,525</div><div class="delta" style="color:#fff;">+$1,977</div></div></td><td class="c"><div class="cell cell-y10" style="background:rgb(41,64,104);color:#fff;"><div class="val">$11,908</div><div class="delta" style="color:#fff;">+$3,360</div></div></td></tr><tr class="row" style="--oc:rgb(51,81,128);"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:rgb(51,81,128);"></div><div><div class="scenario-label">Tier 2 only</div><div class="sublabel">~$256/mo above today by yr 10</div></div></div></td><td class="c"><div class="cell cell-today"><div class="val">$8,548</div></div></td><td class="c"><div class="cell" style="background:rgb(243,231,189);color:#111;"><div class="val">$8,828</div><div class="delta" style="color:#111;">+$280</div></div></td><td class="c"><div class="cell" style="background:rgb(220,194,98);color:#111;"><div class="val">$9,504</div><div class="delta" style="color:#111;">+$956</div></div></td><td class="c"><div class="cell" style="background:rgb(195,184,106);color:#111;"><div class="val">$9,777</div><div class="delta" style="color:#111;">+$1,229</div></div></td><td class="c"><div class="cell" style="background:rgb(152,166,131);color:#111;"><div class="val">$10,272</div><div class="delta" style="color:#111;">+$1,724</div></div></td><td class="c"><div class="cell cell-y10" style="background:rgb(51,81,128);color:#fff;"><div class="val">$11,622</div><div class="delta" style="color:#fff;">+$3,074</div></div></td></tr><tr class="row" style="--oc:rgb(54,86,134);"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:rgb(54,86,134);"></div><div><div class="scenario-label">Tier 1 + Trash</div><div class="sublabel">~$249/mo above today by yr 10</div></div></div></td><td class="c"><div class="cell cell-today"><div class="val">$8,548</div></div></td><td class="c"><div class="cell" style="background:rgb(242,227,178);color:#111;"><div class="val">$8,896</div><div class="delta" style="color:#111;">+$348</div></div></td><td class="c"><div class="cell" style="background:rgb(225,196,96);color:#111;"><div class="val">$9,440</div><div class="delta" style="color:#111;">+$892</div></div></td><td class="c"><div class="cell" style="background:rgb(201,187,104);color:#111;"><div class="val">$9,707</div><div class="delta" style="color:#111;">+$1,159</div></div></td><td class="c"><div class="cell" style="background:rgb(158,169,124);color:#111;"><div class="val">$10,199</div><div class="delta" style="color:#111;">+$1,651</div></div></td><td class="c"><div class="cell cell-y10" style="background:rgb(54,86,134);color:#fff;"><div class="val">$11,539</div><div class="delta" style="color:#fff;">+$2,991</div></div></td></tr><tr class="row" style="--oc:rgb(74,110,155);"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:rgb(74,110,155);"></div><div><div class="scenario-label">Tier 1 only</div><div class="sublabel">~$225/mo above today by yr 10</div></div></div></td><td class="c"><div class="cell cell-today"><div class="val">$8,548</div></div></td><td class="c"><div class="cell" style="background:rgb(247,240,214);color:#111;"><div class="val">$8,678</div><div class="delta" style="color:#111;">+$130</div></div></td><td class="c"><div class="cell" style="background:rgb(234,209,126);color:#111;"><div class="val">$9,210</div><div class="delta" style="color:#111;">+$662</div></div></td><td class="c"><div class="cell" style="background:rgb(223,195,97);color:#111;"><div class="val">$9,467</div><div class="delta" style="color:#111;">+$919</div></div></td><td class="c"><div class="cell" style="background:rgb(180,178,111);color:#111;"><div class="val">$9,946</div><div class="delta" style="color:#111;">+$1,398</div></div></td><td class="c"><div class="cell cell-y10" style="background:rgb(74,110,155);color:#fff;"><div class="val">$11,253</div><div class="delta" style="color:#fff;">+$2,705</div></div></td></tr><tr class="row" style="--oc:rgb(137,159,148);"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:rgb(137,159,148);"></div><div><div class="scenario-label">Trash only</div><div class="sublabel">~$159/mo above today by yr 10</div></div></div></td><td class="c"><div class="cell cell-today"><div class="val">$8,548</div></div></td><td class="c"><div class="cell" style="background:rgb(245,235,199);color:#111;"><div class="val">$8,766</div><div class="delta" style="color:#111;">+$218</div></div></td><td class="c"><div class="cell" style="background:rgb(245,234,198);color:#111;"><div class="val">$8,777</div><div class="delta" style="color:#111;">+$229</div></div></td><td class="c"><div class="cell" style="background:rgb(244,234,196);color:#111;"><div class="val">$8,789</div><div class="delta" style="color:#111;">+$241</div></div></td><td class="c"><div class="cell" style="background:rgb(233,208,122);color:#111;"><div class="val">$9,234</div><div class="delta" style="color:#111;">+$686</div></div></td><td class="c"><div class="cell cell-y10" style="background:rgb(137,159,148);color:#111;"><div class="val">$10,447</div><div class="delta" style="color:#111;">+$1,899</div></div></td></tr><tr class="row" style="--oc:#999;"><td class="scenario-cell"><div class="scenario-inner"><div class="dot" style="background:#999;"></div><div><div class="scenario-label">No overrides</div><div class="sublabel">~$200/mo above today by yr 10</div></div></div></td><td class="c"><div class="cell cell-today"><div class="val">$8,548</div></div></td><td class="c"><div class="cell" style="background:#f2efe8;color:#555;"><div class="val">$8,762</div><div class="delta" style="color:#666;">+$214</div></div></td><td class="c"><div class="cell" style="background:#f2efe8;color:#555;"><div class="val">$8,981</div><div class="delta" style="color:#666;">+$433</div></div></td><td class="c"><div class="cell" style="background:#f2efe8;color:#555;"><div class="val">$9,205</div><div class="delta" style="color:#666;">+$657</div></div></td><td class="c"><div class="cell" style="background:#f2efe8;color:#555;"><div class="val">$9,671</div><div class="delta" style="color:#666;">+$1,123</div></div></td><td class="c"><div class="cell cell-y10" style="background:#f2efe8;color:#555;"><div class="val">$10,942</div><div class="delta" style="color:#666;">+$2,394</div></div></td></tr>
           </tbody>
         </table>
       </div>
-      <div class="note-box">Year 1 uses the FY2027 base plus the first override draw only. Year 2 adds 2.5% growth to the prior base and prior draw, then layers in the second draw. Year 3 does the same and adds the third draw. If residents do not approve the trash and recycling override, they would keep paying the separate trash and recycling fee.</div>
-      <div class="explainer">
-        <h3>How each number is built</h3>
-        <p><strong>No overrides:</strong> FY27 base in Year 1. Then the levy grows 2.5% a year under Proposition 2½.</p>
-        <p><strong>Service only:</strong> Start with the FY27 base and add the tier's three annual draws. Tier 1 uses $1.3M, $5.3M, and $2.4M. Tier 2 uses $2.8M, $6.7M, and $2.5M. Tier 3 uses $4.3M, $7.1M, and $3.6M.</p>
-        <p><strong>Trash only:</strong> Start with the FY27 base and add $2,186,516 in Year 1, then $54,662.90 in Year 2, then $57,396.05 in Year 3.</p>
-        <p><strong>Combined rows:</strong> Add the service draw and trash draw together for each year, then carry them forward with 2.5% annual growth.</p>
-        <p><strong>Formula:</strong> Year 1 = FY27 base + first draw. Year 2 = (FY27 base × 1.025) + (Year 1 draw × 1.025) + second draw. Year 3 = (FY27 base × 1.025²) + (Year 1 draw × 1.025²) + (Year 2 draw × 1.025) + third draw.</p>
+
+      <div class="callout">
+        <strong>Checked against the town presentation:</strong> The service-side cumulative increases in this table match the median-home spreadsheet values shown in the presentation materials: Tier 1 at about $130, $662 and $919 by Years 1, 2 and 3; Tier 2 at about $280, $956 and $1,230; and Tier 3 at about $429, $1,149 and $1,537. The rounded annual pieces on the presentation slide also add up to those same Year 3 totals.
       </div>
-      <div class="footnote">Service tiers use the town's three-year phase-in structure for Tier 1 (M), Tier 2 (M), and Tier 3 (M). Trash uses the FY27 New Curbside Collection amount of ,186,516 plus the two smaller follow-on draws shown in town materials.</div>
+
+      <div class="method">
+        <strong>How each number is built:</strong><br><br>
+        <strong>Base bill:</strong> <code>998,600 × 8.56 / 1,000 = 8,548.016</code>, shown as <strong>$8,548</strong>.<br>
+        <strong>Service-only rows:</strong> use the town's median-home cumulative totals from the spreadsheet image. Example: <code>Tier 3 Year 2 = 8,548.016 + 1,149.14 = 9,697.156</code>, shown as <strong>$9,697</strong>.<br>
+        <strong>Trash-only row:</strong> uses the trash worksheet's FY27, FY28 and FY29 draw path converted to the median home: <code>$218.35</code>, <code>$229.27</code>, <code>$240.73</code>. Example: <code>Trash Year 3 = 8,548.016 + 240.73 = 8,788.746</code>, shown as <strong>$8,789</strong>.<br>
+        <strong>Combined rows:</strong> add service and trash cumulative increases together before adding them to the base bill. Example: <code>Tier 3 + Trash Year 3 = 8,548.016 + 1,537.36 + 240.73 = 10,326.106</code>, shown as <strong>$10,326</strong>.<br>
+        <strong>Year 5 and Year 10:</strong> start from each row's Year 3 total and grow that total by 2.5% for 2 more years and 7 more years: <code>Year 5 = Year 3 × 1.025²</code>; <code>Year 10 = Year 3 × 1.025⁷</code>.<br>
+        <strong>No overrides:</strong> grows today's bill by 2.5% per year across the displayed columns.
+      </div>
+
+      <div class="footnote">
+        Median-home value, rounded annual service impacts, and Year 3 override totals come from the town's FY2027 override presentation. Trash starts from the FY27 New Curbside Collection amount in the no-override budget and uses the two smaller follow-on draws shown in the town worksheet. This table shows the property-tax bill only, not the net household cost after any trash fee change.
+      </div>
     </div>
   </div>
 </div>
