@@ -1,6 +1,6 @@
-# Marblehead Levy Capacity Matrix 2026
+# Marblehead levy paths from an FY2027 baseline
 
-GitHub Pages-ready publication package for a standalone levy-capacity explainer showing how Marblehead's total property tax levy grows over 30 years under each override scenario.
+GitHub Pages-ready publication package for a standalone explainer showing how Marblehead's total property tax levy changes over time from an FY2027 baseline under each override outcome.
 
 ## Repository name
 
@@ -8,50 +8,95 @@ GitHub Pages-ready publication package for a standalone levy-capacity explainer 
 
 ## Description
 
-Standalone GitHub Pages site showing Marblehead's total property tax levy growth over 30 years for every override scenario.
+Standalone static page showing Marblehead's levy paths from an FY2027 base under eight scenarios:
+
+- No overrides
+- Trash only
+- Tier 1 only
+- Tier 1 + Trash
+- Tier 2 only
+- Tier 2 + Trash
+- Tier 3 only
+- Tier 3 + Trash
+
+The table shows the FY27 base, Year 1, Year 2, Year 3, Year 10, Year 20, and Year 30.
 
 ## Why this exists
 
-The median single-family home in Marblehead is assessed at $998,550 and pays $8,548 in property taxes this fiscal year, at a residential rate of $8.56 per $1,000 of value. That homeowner-level baseline is the starting point for understanding the override debate, but it is not the whole story.
+This page is meant to help readers see that the override debate is not only about a one-year bill increase. It is also about how much permanent levy capacity is created and how that capacity grows over time under Proposition 2½.
 
-The larger structural question is what happens to Marblehead's levy limit after an override passes. Proposition 2½ caps how much a Massachusetts town can raise in property taxes in any given year. An override does not just add money for a temporary draw period. It permanently lifts the levy limit. Once lifted, the new limit grows automatically by 2.5 percent every year, forever, whether the town spends up to it or not.
+The page starts with an FY2027 base levy and then layers in the override draws using the town's three-year phase-in structure. The service override has three tiers:
 
-Marblehead's fiscal 2026 levy is $84.618 million. This project exists to show what each override scenario adds to that permanent levy limit on day one and what that authority grows to over time under Proposition 2½'s automatic compounding.
+- Tier 1 — Partial Restore — $9 million
+- Tier 2 — Build — $12 million
+- Tier 3 — Invest — $15 million
 
-Marblehead's Annual Town Meeting convenes May 4 at the Marblehead High School Field House. Before any override reaches the June 9 ballot, Town Meeting must vote to send it there. Town administrator Thatcher Kezer and finance director Aleesha Benjamin presented the package on April 8, 2026. It contains two separate ballot questions: a tiered service override and a standalone trash override.
+The trash path uses the FY27 curbside amount shown in the no-override budget and then adds the two smaller follow-on draws shown in town materials.
 
-The service override has three tiers: Tier 1, "Restore," at $9 million; Tier 2, "Stabilize," at $12 million; and Tier 3, "Invest," at $15 million. Each tier includes the one below it, and whichever highest tier clears 50 percent wins. If none does, the service override fails. The trash override is a separate yes-or-no question worth $2,298,575.
-
-This page is designed to function as the second embedded widget in a broader article, appearing after readers have seen the near-term household tax effects. At that point, the story shifts from next year's bill to the longer-term structural effect of permanently expanding the town's taxing authority.
-
-Two features of Massachusetts law make that structural view important. First, Town Meeting is not required to levy up to the full authorized limit each year. It can bank unused capacity and draw on it later. Second, Town Meeting is not bound to appropriate override dollars to the same purposes in future years. Today’s library restoration can become tomorrow’s pension contribution with no additional vote. In the case of school spending, Town Meeting appropriates the money and the School Committee then determines how school funds are allocated. The only way to reduce authorized levy capacity is an underride, which itself requires a majority vote of the electorate.
+This widget is designed to complement a separate homeowner-impact explainer. Used together, the two pages help readers distinguish between household tax effects and townwide levy growth.
 
 ## What this repo contains
 
-- `index.html` - the standalone published page
+- `index.html` - the published page
 - `.nojekyll` - tells GitHub Pages to serve the site as plain static files
+- `README.md` - project notes and publishing instructions
 
-## Purpose
+## What the page shows
 
-This project publishes a single reference page designed to show the long-term compounding effect of Proposition 2½ and how each override outcome adds permanent levy capacity on top of the existing baseline.
+The page compares levy paths for every ballot outcome from the same FY2027 starting point.
 
-The page is aimed at readers who want to understand not just the size of the ballot questions, but how the town's overall levy grows over time even in the no-override case.
+- Year 1 shows the FY2027 base plus the first override draw only.
+- Year 2 carries the base and prior draw forward at 2.5% and then adds the second draw.
+- Year 3 does the same and then adds the third draw.
+- Year 10, Year 20, and Year 30 show how those paths keep growing over time.
 
-It is built to complement a separate household tax-impact widget. Used together, the two pages help readers distinguish between short-term bill changes and long-term changes in permanent taxing authority.
+If residents do not approve the trash and recycling override, they would continue paying the separate trash and recycling fee.
+
+## Math used in the table
+
+Let:
+
+- `L` = FY2027 base levy
+- `d1` = first-year draw
+- `d2` = second-year draw
+- `d3` = third-year draw
+
+Then:
+
+- `Year 1 = L + d1`
+- `Year 2 = (L × 1.025) + (d1 × 1.025) + d2`
+- `Year 3 = (L × 1.025^2) + (d1 × 1.025^2) + (d2 × 1.025) + d3`
+
+For later years, the same logic continues: the base and all prior draws remain in the levy path and keep growing by 2.5% a year.
+
+### Draws used
+
+Service tiers:
+
+- Tier 1: `1.3M`, `5.3M`, `2.4M`
+- Tier 2: `2.8M`, `6.7M`, `2.5M`
+- Tier 3: `4.3M`, `7.1M`, `3.6M`
+
+Trash:
+
+- `2,186,516`
+- `54,662.90`
+- `57,396.05`
 
 ## Audience
 
 - Marblehead voters
 - Local reporters and editors
-- Researchers tracking municipal finance
-- Civic groups explaining long-term budget impacts
+- Civic groups explaining budget choices
+- Readers who want to compare short-term and long-term effects
 
 ## Features
 
 - Fully static HTML with no build step
 - Mobile-friendly responsive table
-- Color-coded scenario comparison
-- 30-year levy growth framing
+- FY2027 baseline framing
+- Year 1, Year 2, and Year 3 phase-in view
+- Long-range comparison through Year 30
 - GitHub Pages compatible from the repository root
 
 ## Publishing on GitHub Pages
@@ -70,7 +115,7 @@ Your published site will then be available at:
 
 ## Local preview
 
-Because this is a static HTML page, you can preview it by opening `index.html` directly in a browser.
+Open `index.html` directly in a browser.
 
 ## Editing content
 
@@ -78,10 +123,10 @@ For most updates, edit `index.html`.
 
 ## Content notes
 
-- Figures are shown in millions of dollars.
-- The page compares baseline levy growth with each override scenario over a 30-year horizon.
-- Explanatory callouts highlight compounding and the distinction between authorized levy capacity and yearly appropriations.
-- The page is designed to accompany reporting that explains how Town Meeting and later voters are deciding whether to permanently expand levy authority, not merely approve a temporary draw schedule.
+- Figures are shown in millions of dollars unless otherwise noted.
+- The table is a levy-path explainer, not a homeowner tax-bill calculator.
+- The page uses the town's three-year phase-in structure for the service override and the trash path materials supplied for FY27 through FY29.
+- The page is designed to accompany reporting on how override choices change permanent taxing authority over time.
 
 ## Suggested topics/tags
 
